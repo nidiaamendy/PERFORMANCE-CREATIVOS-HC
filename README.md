@@ -1,60 +1,56 @@
-# Hidalgo Tours · Creativos por país (Conversiones LATAM)
+# Hidalgo Tours · Performance de creativos por país
 
-Reporte interactivo que muestra qué creativo funcionó mejor en cada país en la campaña
-**HC_HT_CONV_LATAM | MAY_2026** de la cuenta **HIDALGO TOURS BM** (Meta Ads).
-
-Período: 5 de mayo al 24 de noviembre de 2026. Moneda: bolivianos (BOB).
+Reporte interactivo de la campaña **HC_HT_CONV_LATAM | MAY_2026** (cuenta **HIDALGO TOURS BM**, Meta Ads).
+Muestra qué creativo funcionó mejor en cada país, mes a mes. Moneda: bolivianos (BOB).
 
 ## Qué incluye
 
-- KPIs de la campaña: gasto, conversaciones, CPL, alcance, frecuencia e impresiones.
-- **Top 3 creativos por país** con CPL, conversaciones, gasto, alcance, frecuencia y formato.
-- Gráfico de CPL por creativo, coloreado por formato (video, estático o carrusel).
-- Resumen por país y una tabla con el detalle de todos los creativos, que se puede ordenar.
-- Filtros por país y formato, criterio para ordenar el ranking (CPL, conversaciones o alcance)
-  y gasto mínimo para entrar al ranking.
+- **Selector de período:** cada mes calendario por separado, o el acumulado desde el inicio de la campaña.
+- **Indicadores:** gasto, conversaciones, CPL, alcance, frecuencia e impresiones, con la variación contra el mes anterior.
+- **Top 3 creativos por país**, con CPL, conversaciones, gasto, alcance, frecuencia y formato (video, estático o carrusel).
+- **Gráfico de CPL por creativo**, resumen por país y una tabla con todos los creativos que se puede ordenar.
+- **Filtros** por país y formato, criterio para ordenar el ranking y un gasto mínimo para entrar.
 
-## Archivos
+Se puede compartir un mes concreto agregando `#AAAA-MM` al link, por ejemplo `.../#2026-10`.
 
-| Archivo | Qué es |
-|---|---|
-| `index.html` | La página del reporte (HTML, CSS y JS en un solo archivo, sin dependencias externas). |
-| `data.js` | Los datos que usa el reporte (`window.REPORT_DATA`). |
+## Estructura
 
-## Publicarlo con GitHub Pages
+```
+index.html          La página del reporte (sin dependencias externas)
+data/meses.js       Índice de períodos: qué meses hay y cuál se abre por defecto
+data/AAAA-MM.js     Un archivo por mes calendario (ej. data/2026-11.js)
+data/acumulado.js   Total desde el inicio de la campaña
+```
 
-1. Sube `index.html`, `data.js` y este `README.md` a la raíz del repositorio (o a una carpeta `docs/`).
-2. En GitHub, ve a **Settings → Pages**.
-3. En **Source** elige la rama (por ejemplo `main`) y la carpeta (`/root` o `/docs`). Guarda.
-4. En uno o dos minutos el reporte queda en `https://<usuario>.github.io/<repositorio>/`.
+## Actualización mensual
 
-También se puede abrir directamente con doble clic en `index.html`; funciona sin servidor.
+Cada mes:
 
-## Actualizar los datos
+1. Se genera `data/AAAA-MM.js` con los datos del mes desde Meta Ads.
+2. Si el mes anterior estaba en curso, se regenera con el mes ya cerrado.
+3. Se actualiza `data/acumulado.js`.
+4. En `data/meses.js` se agrega el mes nuevo al inicio de `periods` y se cambia `default`.
 
-Solo hay que reemplazar `data.js`. Su estructura es:
+GitHub Pages publica el cambio solo, en uno o dos minutos. El link no cambia.
+
+### Formato de cada archivo de período
 
 ```js
-window.REPORT_DATA = {
-  meta: { campaign, campaign_id, account, account_id, currency,
-          period_start, period_end, generated, result_type,
-          total: { spend, conversations, impressions, reach, link_clicks } },
+(window.REPORT_PERIODS = window.REPORT_PERIODS || {})["2026-11"] = {
+  key, label, period_start, period_end, partial,
+  total:     { spend, conversations, impressions, reach, link_clicks },
   countries: [ { code, spend, conversations, impressions, reach, link_clicks } ],
   creatives: [ { country, creative, format, spend, conversations, impressions,
                  reach, link_clicks, ads, active, ad_names } ]
 };
 ```
 
-- `countries` usa el alcance real por país (sin duplicar), sacado de la campaña con desglose por país.
-- `creatives` tiene una fila por país + creativo + formato. Los anuncios duplicados de la misma pieza
-  (en varios conjuntos o como "- Copia") se suman en una sola fila.
-- `format` puede ser `Video`, `Estático` o `Carrusel`.
-
 ## Notas de método
 
-- **Conversaciones** = conversaciones de mensajes iniciadas (7 días clic / 1 día vista).
-- **CPL** = gasto ÷ conversaciones.
-- **Alcance y frecuencia por creativo** se suman entre los anuncios de la misma pieza, así que
-  pueden contar dos veces a una persona que vio dos copias. Sirven para comparar creativos;
-  el alcance exacto está a nivel país.
+- **Conversaciones:** conversaciones de mensajes iniciadas (7 días clic / 1 día vista), que es el resultado que optimiza la campaña.
+- **CPL:** gasto ÷ conversaciones.
+- **Creativo:** agrupa los anuncios con la misma pieza aunque estén duplicados en varios conjuntos o como "- Copia". Si una pieza existe en dos formatos, se separa por formato.
+- **Formato:** *Video* si el anuncio registró reproducciones, *Carrusel* si tiene varias tarjetas, *Estático* si es una imagen única.
+- **Alcance:** el alcance por país es el real de Meta, sin duplicar. El alcance por creativo es una suma entre anuncios y puede contar dos veces a la misma persona.
 - Los resultados con menos de 20 conversaciones se marcan como "volumen bajo".
+- Un mes en curso se marca como tal. Su gasto y sus conversaciones van a subir hasta que el mes cierre.

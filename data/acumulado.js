@@ -1,22 +1,16 @@
-// Datos del reporte. Para actualizar, reemplaza este objeto con datos nuevos de Meta Ads.
-window.REPORT_DATA = {
- "meta": {
-  "campaign": "HC_HT_CONV_LATAM | MAY_2026",
-  "campaign_id": "120244486890060158",
-  "account": "HIDALGO TOURS BM",
-  "account_id": "892497585448594",
-  "currency": "BOB",
-  "period_start": "2026-05-05",
-  "period_end": "2026-11-24",
-  "generated": "2026-11-24",
-  "result_type": "Conversaciones de mensajes iniciadas (7 días)",
-  "total": {
-   "spend": 54059.11,
-   "conversations": 7780,
-   "impressions": 3967070,
-   "reach": 1134218,
-   "link_clicks": 24927
-  }
+// Hidalgo Tours · datos del período acumulado. Generado desde Meta Ads.
+(window.REPORT_PERIODS = window.REPORT_PERIODS || {})["acumulado"] = {
+ "key": "acumulado",
+ "label": "Acumulado (5 may – 24 nov 2026)",
+ "period_start": "2026-05-05",
+ "period_end": "2026-11-24",
+ "partial": false,
+ "total": {
+  "spend": 54059.11,
+  "conversations": 7780,
+  "impressions": 3967070,
+  "reach": 1134218,
+  "link_clicks": 24927
  },
  "countries": [
   {
