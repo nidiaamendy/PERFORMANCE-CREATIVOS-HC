@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hidalgo Tours · Creativos por país · Conversiones LATAM</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f4f3f0; --surface:#fcfcfb; --surface-2:#f0efeb; --border:#e2e0da;
+  --text:#0b0b0b; --text-2:#52514e; --muted:#7a7873;
+  --accent:#1c5cab;
+  --video:#2a78d6; --estatico:#eb6834; --carrusel:#1baf7a;
+  --gold:#b98a00; --silver:#8a8d93; --bronze:#a0603a;
+  --radius:12px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    color-scheme:dark;
+    --bg:#121211; --surface:#1a1a19; --surface-2:#232321; --border:#33322f;
+    --text:#f0efec; --text-2:#c3c2b7; --muted:#8f8d86;
+    --accent:#86b6ef;
+    --video:#3987e5; --estatico:#d95926; --carrusel:#199e70;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding:32px 24px 64px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:flex-end;margin-bottom:24px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:28px;line-height:1.2;margin:4px 0 6px;letter-spacing:-.01em}
+h2{font-size:18px;margin:0 0 4px}
+.sub{color:var(--text-2);margin:0}
+.meta{font-size:13px;color:var(--text-2);text-align:right}
+.meta b{color:var(--text)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+section{margin-top:28px}
+.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.section-head p{margin:0;color:var(--text-2);font-size:13px}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.kpi .label{font-size:12px;color:var(--text-2);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.kpi .value{font-size:26px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.kpi .hint{font-size:12px;color:var(--muted)}
+
+/* Controls */
+.controls{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;margin-top:20px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;border-bottom:1px solid var(--border)}
+.ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ctrl > span{font-size:12px;color:var(--text-2);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:3px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:var(--text-2);font:inherit;font-size:13px;padding:5px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.12);font-weight:600}
+.seg button:focus-visible,select:focus-visible,th button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{font:inherit;font-size:13px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:5px 8px}
+
+/* Format chip */
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2);font-weight:600}
+.chip i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.f-Video i{background:var(--video)} .f-Estático i{background:var(--estatico)} .f-Carrusel i{background:var(--carrusel)}
+
+/* Top 3 */
+.country-block{margin-bottom:18px}
+.country-title{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;flex-wrap:wrap}
+.country-title h3{margin:0;font-size:16px}
+.country-title span{font-size:13px;color:var(--text-2)}
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:860px){.top3{grid-template-columns:1fr}}
+.tcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:10px;position:relative}
+.tcard .rank{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.medal{width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+.r1 .medal{background:var(--gold)} .r2 .medal{background:var(--silver)} .r3 .medal{background:var(--bronze)}
+.tcard .name{font-weight:700;font-size:15px;line-height:1.3}
+.tcard .ads{font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 12px;border-top:1px solid var(--border);padding-top:10px}
+.stat .l{font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-weight:700;font-variant-numeric:tabular-nums}
+.stat.hl .v{font-size:18px}
+.lowvol{font-size:11px;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:2px 6px;align-self:flex-start}
+.empty{color:var(--muted);font-size:13px;padding:12px;border:1px dashed var(--border);border-radius:var(--radius)}
+
+/* Bars */
+.bars{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:grid;grid-template-columns:minmax(140px,260px) 1fr 90px;gap:12px;align-items:center;font-size:13px;padding:2px 0;cursor:default}
+.bar-row .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.bar-track{height:18px;position:relative}
+.bar{height:100%;border-radius:0 4px 4px 0;min-width:2px}
+.bar-row .num{text-align:right;font-variant-numeric:tabular-nums;color:var(--text-2)}
+.bar-row:hover .lbl{font-weight:600}
+.bar-row:hover .bar{filter:brightness(1.08)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.avgline{position:absolute;top:-4px;bottom:-4px;border-left:1.5px dashed var(--muted)}
+
+/* Tables */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child,th.l,td.l{text-align:left}
+thead th{position:sticky;top:0;background:var(--surface);color:var(--text-2);font-weight:600;font-size:12px}
+th button{all:unset;cursor:pointer;display:inline-flex;gap:4px;align-items:center}
+th button .arrow{opacity:.35;font-size:10px}
+th[aria-sort] button .arrow{opacity:1}
+tbody tr:hover{background:var(--surface-2)}
+td.name{max-width:280px;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.dot-active{display:inline-block;width:7px;height:7px;border-radius:50%;background:#1baf7a;margin-left:6px;vertical-align:middle}
+
+/* Tooltip */
+#tip{position:fixed;pointer-events:none;background:var(--text);color:var(--surface);font-size:12px;line-height:1.45;padding:8px 10px;border-radius:8px;opacity:0;transition:opacity .08s;z-index:50;max-width:280px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+#tip b{font-weight:700}
+
+.more{margin-top:12px;font:inherit;font-size:13px;background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 12px;cursor:pointer}
+.more:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:600px){.kpi .value{font-size:21px}.controls{position:static}h1{font-size:23px}.meta{text-align:left}.bar-row{grid-template-columns:110px 1fr 70px;gap:8px}}
+.notes{font-size:13px;color:var(--text-2)}
+.notes li{margin-bottom:6px}
+footer{margin-top:32px;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Hidalgo Tours · Meta Ads</div>
+      <h1>¿Qué creativo funcionó mejor en cada país?</h1>
+      <p class="sub" id="subtitle"></p>
+    </div>
+    <div class="meta" id="meta"></div>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="controls" role="toolbar" aria-label="Filtros del reporte">
+    <div class="ctrl"><span>País</span><div class="seg" id="f-country"></div></div>
+    <div class="ctrl"><span>Formato</span><div class="seg" id="f-format"></div></div>
+    <div class="ctrl"><span>Ordenar top por</span>
+      <select id="f-rank">
+        <option value="cpl">Menor CPL</option>
+        <option value="conversations">Más conversaciones</option>
+        <option value="reach">Mayor alcance</option>
+      </select>
+    </div>
+    <div class="ctrl"><span>Gasto mínimo</span>
+      <select id="f-min" title="Solo entran al ranking los creativos que tienen al menos este % del gasto del país">
+        <option value="0">Sin mínimo</option>
+        <option value="0.01">1% del país</option>
+        <option value="0.03" selected>3% del país</option>
+        <option value="0.05">5% del país</option>
+      </select>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>Top 3 creativos por país</h2>
+      <p id="top-note"></p>
+    </div>
+    <div id="top3"></div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <h2 id="bars-title">CPL por creativo</h2>
+      <p>Costo por conversación iniciada. La línea punteada es el CPL promedio del país (o de la campaña). Pasa el cursor para ver el detalle.</p>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="bars" id="bars"></div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <h2>Resumen por país</h2>
+      <p>Totales de la campaña por país (alcance sin duplicar, según Meta).</p>
+    </div>
+    <div class="table-wrap"><table id="t-country"></table></div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <h2 id="detail-title">Detalle de todos los creativos</h2>
+      <p>Haz clic en una columna para ordenar.</p>
+    </div>
+    <div class="table-wrap"><table id="t-detail"></table></div>
+    <button type="button" id="detail-more" class="more">Mostrar todos</button>
+  </section>
+
+  <section class="card notes">
+    <h2>Cómo leer este reporte</h2>
+    <ul>
+      <li><b>Conversaciones:</b> conversaciones de mensajes iniciadas (WhatsApp/Messenger), que es el resultado que optimiza la campaña. Ventana de atribución: 7 días clic / 1 día vista.</li>
+      <li><b>CPL:</b> gasto ÷ conversaciones. Es el costo por lead/conversación.</li>
+      <li><b>Creativo:</b> agrupa los anuncios con la misma pieza aunque estén duplicados en varios conjuntos o como “- Copia”. Se separa por formato si una misma pieza existe en video y en estático.</li>
+      <li><b>Formato:</b> <i>Video</i> si el anuncio registró reproducciones, <i>Carrusel</i> si tiene varias tarjetas, <i>Estático</i> si es una imagen única.</li>
+      <li><b>Alcance y frecuencia por creativo:</b> se suman entre los anuncios de una misma pieza, así que una persona que vio dos copias cuenta dos veces. Es una buena aproximación para comparar; el alcance exacto por país está en “Resumen por país”.</li>
+      <li><b>Gasto mínimo:</b> evita que un creativo con muy poco gasto salga primero por casualidad. Los resultados con menos de 20 conversaciones se marcan como “volumen bajo”.</li>
+    </ul>
+  </section>
+
+  <footer id="footer"></footer>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+const D = window.REPORT_DATA;
+const M = D.meta;
+const COUNTRY_NAMES = {CO:"Colombia",PE:"Perú",CL:"Chile",EC:"Ecuador",MX:"México",AR:"Argentina",PA:"Panamá"};
+const FLAGS = {CO:"🇨🇴",PE:"🇵🇪",CL:"🇨🇱",EC:"🇪🇨",MX:"🇲🇽",AR:"🇦🇷",PA:"🇵🇦"};
+const FORMATS = ["Video","Estático","Carrusel"];
+const LOW_VOL = 20;
+const countries = [...D.countries].sort((a,b)=>b.spend-a.spend);
+const cMap = Object.fromEntries(countries.map(c=>[c.code,c]));
+
+const state = {country:"ALL", format:"ALL", rank:"cpl", min:0.03, sortKey:"spend", sortDir:-1, showAll:false};
+const PAGE = 25;
+
+/* ---------- formatting ---------- */
+const nf0 = new Intl.NumberFormat("es-BO",{maximumFractionDigits:0});
+const nf2 = new Intl.NumberFormat("es-BO",{minimumFractionDigits:2,maximumFractionDigits:2});
+const money = v => "Bs " + nf2.format(v);
+const money0 = v => "Bs " + nf0.format(v);
+const int = v => nf0.format(v);
+const freq = v => isFinite(v) ? nf2.format(v) : "–";
+const cpl = r => r.conversations>0 ? r.spend/r.conversations : Infinity;
+const title = s => s.charAt(0) + s.slice(1).toLowerCase().replace(/\b(\d+d\/\d+n)\b/gi,m=>m.toUpperCase());
+const prettyName = s => {
+  // Mantener mayúsculas en códigos tipo 4D/3N, IG, FB, VID, 1MIN
+  return s.split(" ").map(w=>{
+    if(/^\d|^(IG|FB|VID|POST|AD)$|\//.test(w)) return w;
+    return w.charAt(0)+w.slice(1).toLowerCase();
+  }).join(" ");
+};
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const chip = f => `<span class="chip f-${f}"><i></i>${f}</span>`;
+
+/* ---------- header ---------- */
+document.getElementById("subtitle").textContent = `Campaña ${M.campaign} · ${fmtDate(M.period_start)} al ${fmtDate(M.period_end)}`;
+document.getElementById("meta").innerHTML = `Cuenta <b>${esc(M.account)}</b><br>Moneda: <b>${M.currency}</b> (bolivianos)<br>Datos actualizados: <b>${fmtDate(M.generated)}</b>`;
+document.getElementById("footer").textContent = `Fuente: Meta Ads, cuenta ${M.account} (${M.account_id}), campaña ${M.campaign_id}. Resultado: ${M.result_type}.`;
+function fmtDate(s){const [y,m,d]=s.split("-");const mm=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];return `${+d} ${mm[+m-1]} ${y}`;}
+
+/* ---------- controls ---------- */
+function seg(el, opts, key){
+  el.innerHTML = opts.map(o=>`<button type="button" data-v="${o.v}" aria-pressed="${state[key]===o.v}">${o.t}</button>`).join("");
+  el.addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    state[key]=b.dataset.v;
+    el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    render();
+  });
+}
+seg(document.getElementById("f-country"), [{v:"ALL",t:"Todos"}, ...countries.map(c=>({v:c.code,t:`${FLAGS[c.code]} ${COUNTRY_NAMES[c.code]}`}))], "country");
+seg(document.getElementById("f-format"), [{v:"ALL",t:"Todos"}, ...FORMATS.map(f=>({v:f,t:f}))], "format");
+document.getElementById("f-rank").addEventListener("change",e=>{state.rank=e.target.value;render();});
+document.getElementById("f-min").addEventListener("change",e=>{state.min=+e.target.value;render();});
+
+/* ---------- data helpers ---------- */
+function rowsFor(code){
+  return D.creatives.filter(r=>r.country===code && (state.format==="ALL"||r.format===state.format));
+}
+function aggregateAll(){
+  // Todos los países: agrupa por creativo + formato
+  const m=new Map();
+  for(const r of D.creatives){
+    if(state.format!=="ALL"&&r.format!==state.format) continue;
+    const k=r.creative+"|"+r.format;
+    const a=m.get(k)||{creative:r.creative,format:r.format,spend:0,conversations:0,impressions:0,reach:0,link_clicks:0,ads:0,active:false,ad_names:new Set(),countries:new Set()};
+    a.spend+=r.spend;a.conversations+=r.conversations;a.impressions+=r.impressions;a.reach+=r.reach;a.link_clicks+=r.link_clicks;a.active=a.active||r.active;
+    r.ad_names.forEach(n=>a.ad_names.add(n));a.countries.add(r.country);a.ads=Math.max(a.ads,r.ads);
+    m.set(k,a);
+  }
+  return [...m.values()].map(a=>({...a,ad_names:[...a.ad_names],countries:[...a.countries]}));
+}
+function rankList(list, base){
+  const minSpend = state.min*base;
+  const eligible = list.filter(r=>r.spend>=minSpend && r.conversations>0);
+  const f = {cpl:(a,b)=>cpl(a)-cpl(b), conversations:(a,b)=>b.conversations-a.conversations, reach:(a,b)=>b.reach-a.reach}[state.rank];
+  return eligible.sort(f);
+}
+
+/* ---------- KPIs ---------- */
+function renderKpis(){
+  let t;
+  if(state.country==="ALL"){ t=M.total; }
+  else { t=cMap[state.country]; }
+  // Si hay filtro de formato, los KPIs vienen de la suma de creativos (alcance aproximado)
+  let approx=false;
+  if(state.format!=="ALL"){
+    const list = state.country==="ALL" ? D.creatives : D.creatives.filter(r=>r.country===state.country);
+    const s=list.filter(r=>r.format===state.format);
+    t={spend:sum(s,"spend"),conversations:sum(s,"conversations"),impressions:sum(s,"impressions"),reach:sum(s,"reach"),link_clicks:sum(s,"link_clicks")};
+    approx=true;
+  }
+  const scope = (state.country==="ALL"?"Todos los países":COUNTRY_NAMES[state.country]) + (state.format!=="ALL"?` · ${state.format}`:"");
+  const k=[
+    ["Gasto",money0(t.spend),scope],
+    ["Conversaciones",int(t.conversations),"Mensajes iniciados"],
+    ["CPL",money(t.spend/t.conversations),"Costo por conversación"],
+    ["Alcance",int(t.reach),approx?"Aprox. (suma de anuncios)":"Personas únicas"],
+    ["Frecuencia",freq(t.impressions/t.reach),"Impresiones ÷ alcance"],
+    ["Impresiones",int(t.impressions),""]
+  ];
+  document.getElementById("kpis").innerHTML=k.map(([l,v,h])=>`<div class="card kpi"><div class="label">${l}</div><div class="value">${v}</div><div class="hint">${esc(h)}</div></div>`).join("");
+}
+const sum=(a,k)=>a.reduce((s,r)=>s+r[k],0);
+
+/* ---------- Top 3 ---------- */
+function topCard(r,i){
+  const low = r.conversations<LOW_VOL ? `<span class="lowvol">Volumen bajo · ${r.conversations} conv.</span>`:"";
+  return `<div class="tcard r${i+1}">
+    <div class="rank"><span class="medal">${i+1}</span>${["Primer","Segundo","Tercer"][i]} lugar ${r.active?'<span class="dot-active" title="Tiene anuncios activos"></span>':""}</div>
+    <div><div class="name">${esc(prettyName(r.creative))}</div><div class="ads">${chip(r.format)} · ${r.ad_names.length} anuncio${r.ad_names.length>1?"s":""}</div></div>
+    ${low}
+    <div class="stats">
+      <div class="stat hl"><div class="l">CPL</div><div class="v">${money(cpl(r))}</div></div>
+      <div class="stat hl"><div class="l">Conversaciones</div><div class="v">${int(r.conversations)}</div></div>
+      <div class="stat hl"><div class="l">Gasto</div><div class="v">${money0(r.spend)}</div></div>
+      <div class="stat"><div class="l">Alcance</div><div class="v">${int(r.reach)}</div></div>
+      <div class="stat"><div class="l">Frecuencia</div><div class="v">${freq(r.impressions/r.reach)}</div></div>
+      <div class="stat"><div class="l">Impresiones</div><div class="v">${int(r.impressions)}</div></div>
+    </div>
+  </div>`;
+}
+function renderTop3(){
+  const codes = state.country==="ALL" ? countries.map(c=>c.code) : [state.country];
+  const html = codes.map(code=>{
+    const c=cMap[code];
+    const top=rankList(rowsFor(code), c.spend).slice(0,3);
+    const body = top.length ? `<div class="top3">${top.map(topCard).join("")}</div>` : `<div class="empty">No hay creativos que cumplan el filtro en este país.</div>`;
+    return `<div class="country-block">
+      <div class="country-title"><h3>${FLAGS[code]} ${COUNTRY_NAMES[code]}</h3>
+      <span>CPL del país ${money(c.spend/c.conversations)} · ${int(c.conversations)} conversaciones · ${money0(c.spend)}</span></div>${body}</div>`;
+  }).join("");
+  document.getElementById("top3").innerHTML=html;
+  const rk={cpl:"menor CPL",conversations:"más conversaciones",reach:"mayor alcance"}[state.rank];
+  document.getElementById("top-note").textContent = `Ordenado por ${rk}` + (state.min>0?` · solo creativos con al menos ${state.min*100}% del gasto del país`:"") + "";
+  document.getElementById("top-note").innerHTML += ' · <span class="dot-active" style="margin:0 4px 0 0"></span>tiene anuncios activos';
+}
+
+/* ---------- Bars ---------- */
+function renderBars(){
+  let list, base, avg, scope;
+  let ref;
+  if(state.country==="ALL"){ list=aggregateAll(); base=M.total.spend; ref=M.total; scope="todos los países"; }
+  else { list=rowsFor(state.country); base=cMap[state.country].spend; ref=cMap[state.country]; scope=COUNTRY_NAMES[state.country]; }
+  const eligible=list.filter(r=>r.spend>=state.min*base && r.conversations>0).sort((a,b)=>cpl(a)-cpl(b));
+  avg = ref.spend/ref.conversations;
+  document.getElementById("bars-title").textContent=`CPL por creativo · ${scope}`;
+  const present=[...new Set(eligible.map(r=>r.format))];
+  document.getElementById("legend").innerHTML = FORMATS.filter(f=>present.includes(f)).map(chip).join("");
+  if(!eligible.length){document.getElementById("bars").innerHTML='<div class="empty">No hay creativos que cumplan el filtro.</div>';return;}
+  const max=Math.max(...eligible.map(cpl), avg)*1.05;
+  const color={Video:"var(--video)",Estático:"var(--estatico)",Carrusel:"var(--carrusel)"};
+  document.getElementById("bars").innerHTML = eligible.map((r,i)=>`
+    <div class="bar-row" data-i="${i}">
+      <div class="lbl" title="${esc(prettyName(r.creative))}">${esc(prettyName(r.creative))}</div>
+      <div class="bar-track"><div class="bar" style="width:${cpl(r)/max*100}%;background:${color[r.format]}"></div>${i===0?`<div class="avgline" style="left:${avg/max*100}%" title="Promedio ${money(avg)}"></div>`:`<div class="avgline" style="left:${avg/max*100}%"></div>`}</div>
+      <div class="num">${money(cpl(r))}</div>
+    </div>`).join("");
+  const tip=document.getElementById("tip");
+  document.querySelectorAll("#bars .bar-row").forEach(el=>{
+    const r=eligible[+el.dataset.i];
+    el.addEventListener("mousemove",e=>{
+      tip.innerHTML=`<b>${esc(prettyName(r.creative))}</b> · ${r.format}<br>CPL ${money(cpl(r))} (promedio ${money(avg)})<br>${int(r.conversations)} conversaciones · ${money0(r.spend)}<br>Alcance ${int(r.reach)} · Frecuencia ${freq(r.impressions/r.reach)}${r.countries?`<br>Países: ${r.countries.map(c=>FLAGS[c]).join(" ")}`:""}`;
+      tip.style.opacity=1;
+      const x=Math.min(e.clientX+14, window.innerWidth-300);
+      tip.style.left=x+"px"; tip.style.top=(e.clientY+14)+"px";
+    });
+    el.addEventListener("mouseleave",()=>tip.style.opacity=0);
+  });
+}
+
+/* ---------- Country table ---------- */
+function renderCountryTable(){
+  const rows=countries.map(c=>{
+    const top=rankList(D.creatives.filter(r=>r.country===c.code),c.spend)[0];
+    return `<tr${state.country===c.code?' style="background:var(--surface-2)"':""}><td class="l">${FLAGS[c.code]} ${COUNTRY_NAMES[c.code]}</td><td>${money0(c.spend)}</td><td>${int(c.conversations)}</td><td>${money(c.spend/c.conversations)}</td><td>${int(c.reach)}</td><td>${freq(c.impressions/c.reach)}</td><td>${int(c.impressions)}</td><td class="l">${top?esc(prettyName(top.creative))+" "+chip(top.format):"–"}</td></tr>`;
+  }).join("");
+  const t=M.total;
+  document.getElementById("t-country").innerHTML=`<thead><tr><th class="l">País</th><th>Gasto</th><th>Conversaciones</th><th>CPL</th><th>Alcance</th><th>Frecuencia</th><th>Impresiones</th><th class="l">Creativo #1 (${{cpl:"CPL",conversations:"conv.",reach:"alcance"}[state.rank]})</th></tr></thead>
+  <tbody>${rows}</tbody>
+  <tfoot><tr style="font-weight:700"><td class="l">Total campaña</td><td>${money0(t.spend)}</td><td>${int(t.conversations)}</td><td>${money(t.spend/t.conversations)}</td><td>${int(t.reach)}</td><td>${freq(t.impressions/t.reach)}</td><td>${int(t.impressions)}</td><td></td></tr></tfoot>`;
+}
+
+/* ---------- Detail table ---------- */
+const COLS=[
+  {k:"country",t:"País",l:true,v:r=>r.country,f:r=>`${FLAGS[r.country]} ${COUNTRY_NAMES[r.country]}`},
+  {k:"creative",t:"Creativo",l:true,v:r=>r.creative,f:r=>`<span class="name">${esc(prettyName(r.creative))}</span>${r.active?'<span class="dot-active" title="Tiene anuncios activos"></span>':""}`},
+  {k:"format",t:"Formato",l:true,v:r=>r.format,f:r=>chip(r.format)},
+  {k:"spend",t:"Gasto",v:r=>r.spend,f:r=>money(r.spend)},
+  {k:"conversations",t:"Conversaciones",v:r=>r.conversations,f:r=>int(r.conversations)},
+  {k:"cpl",t:"CPL",v:r=>cpl(r),f:r=>r.conversations?money(cpl(r)):"–"},
+  {k:"reach",t:"Alcance",v:r=>r.reach,f:r=>int(r.reach)},
+  {k:"freq",t:"Frecuencia",v:r=>r.impressions/r.reach,f:r=>freq(r.impressions/r.reach)},
+  {k:"impressions",t:"Impresiones",v:r=>r.impressions,f:r=>int(r.impressions)},
+  {k:"ads",t:"Anuncios",v:r=>r.ad_names.length,f:r=>r.ad_names.length}
+];
+function renderDetail(){
+  let list = D.creatives.filter(r=>(state.country==="ALL"||r.country===state.country)&&(state.format==="ALL"||r.format===state.format));
+  const col=COLS.find(c=>c.k===state.sortKey);
+  list.sort((a,b)=>{const x=col.v(a),y=col.v(b);return (typeof x==="string"?x.localeCompare(y):x-y)*state.sortDir;});
+  const cols = state.country==="ALL"?COLS:COLS.filter(c=>c.k!=="country");
+  document.getElementById("detail-title").textContent=`Detalle de todos los creativos · ${state.country==="ALL"?"todos los países":COUNTRY_NAMES[state.country]} (${list.length})`;
+  const th=cols.map(c=>{
+    const s=state.sortKey===c.k?(state.sortDir===1?"ascending":"descending"):null;
+    return `<th class="${c.l?"l":""}"${s?` aria-sort="${s}"`:""}><button data-k="${c.k}">${c.t}<span class="arrow">${s==="descending"?"▼":"▲"}</span></button></th>`;}).join("");
+  const total=list.length;
+  const shown=state.showAll?list:list.slice(0,PAGE);
+  const tb=shown.map(r=>`<tr>${cols.map(c=>`<td class="${c.l?"l":""}" ${c.k==="creative"?`title="${esc(r.ad_names.join(" · "))}"`:""}>${c.f(r)}</td>`).join("")}</tr>`).join("");
+  const t=document.getElementById("t-detail");
+  t.innerHTML=`<thead><tr>${th}</tr></thead><tbody>${tb}</tbody>`;
+  const more=document.getElementById("detail-more");
+  if(total>PAGE){more.hidden=false;more.textContent=state.showAll?`Mostrar solo ${PAGE}`:`Mostrar los ${total} creativos`;}else more.hidden=true;
+  t.querySelectorAll("th button").forEach(b=>b.addEventListener("click",()=>{
+    const k=b.dataset.k;
+    if(state.sortKey===k) state.sortDir*=-1; else {state.sortKey=k; state.sortDir=(k==="cpl"||COLS.find(c=>c.k===k).l)?1:-1;}
+    renderDetail();
+  }));
+}
+
+document.getElementById("detail-more").addEventListener("click",()=>{state.showAll=!state.showAll;renderDetail();});
+function render(){renderKpis();renderTop3();renderBars();renderCountryTable();renderDetail();}
+render();
+})();
+</script>
+</body>
+</html>
